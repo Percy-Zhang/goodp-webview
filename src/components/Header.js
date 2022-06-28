@@ -24,7 +24,7 @@ const HEADER_MARGIN = 20
 
 const styles = StyleSheet.create({
 	header: {
-		backgroundColor: '#2a4',
+		backgroundColor: '#67ae3f',
 		paddingHorizontal: HEADER_MARGIN,
 		paddingVertical: 17,
 	},
