@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { StyleSheet, View, Text, TextInput, Image } from 'react-native-web'
 
 function Header() {
+	const [value, setValue] = useState()
 	return (
 		<View style={styles.header}>
 			<View style={styles.headerRow1}>
@@ -12,6 +14,8 @@ function Header() {
 			<View style={styles.headerRow2}>
 				<TextInput 
 					style={styles.searchBar}
+					value={value}
+					onChangeText={setValue}
 				/>
 				<Image source={require('../assets/search.png')} style={styles.search}/>
 			</View>
@@ -56,12 +60,12 @@ const styles = StyleSheet.create({
 	},
 	searchBar: {
 		flex: 1,
+		outlineStyle: 'none',
 	},
 	search: {
 		width: 25,
 		height: 25,
 	},
-	
 })
 
 export default Header;
