@@ -10,7 +10,7 @@ const arr = []
 let i = 0
 // while (i++ < 100) arr.push(i)
 
-console.log('v 0.1.5')
+console.log('v0.1.5')
 
 function App() {
 	const [token, setToken] = useState()
