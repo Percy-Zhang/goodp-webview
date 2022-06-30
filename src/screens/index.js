@@ -10,15 +10,15 @@ const arr = []
 let i = 0
 while (i++ < 100) arr.push(i)
 
-console.log('v 0.1.1')
+console.log('v 0.1.2')
 
 function App() {
 	const [count, setCount] = useState(0)
 	const [test, setTest] = useState()
 	useEffect(() => {
-		const unsubscribe = window.addEventListener("message", message => {
+		const onMessage = message => {
 			console.log('\n\nSTART')
-			alert(message.data)
+			// alert(message.data)
 			try {
 				const m = JSON.parse(message.data)
 				if (m.type != "debug") {
@@ -32,9 +32,10 @@ function App() {
 			console.log('T4', window)
 			setTest(JSON.stringify(message.origin))
 			setCount(c => c + 1)
-		})
+		}
 
-		return unsubscribe
+		window.addEventListener("message", onMessage)
+		return () => window.removeEventListener("message", onMessage)
 	}, [])
 	
 
