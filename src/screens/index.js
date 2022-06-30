@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { StyleSheet, View, Text, TextInput, Image, ScrollView } from 'react-native-web'
 
 import Header from '../components/Header'
@@ -10,10 +11,14 @@ let i = 0
 while (i++ < 100) arr.push(i)
 
 function App() {
-	window.addEventListener("message", message => {
-		alert(message.data) 
-	})
+	useEffect(() => {
+		window.addEventListener("message", message => {
+			alert(message.data)
+			console.log(message)
+		})
+	}, [])
 	
+
 	return (
 		<View style={styles.container}> 
 			<Header />
