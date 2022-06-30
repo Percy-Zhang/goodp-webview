@@ -10,12 +10,16 @@ const arr = []
 let i = 0
 while (i++ < 100) arr.push(i)
 
+console.log('v 0.1.0')
+
 function App() {
 	useEffect(() => {
-		window.addEventListener("message", message => {
+		const unsubscribe = window.addEventListener("message", message => {
 			alert(message.data)
 			console.log(message)
 		})
+
+		return unsubscribe
 	}, [])
 	
 
