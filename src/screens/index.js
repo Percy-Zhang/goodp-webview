@@ -10,7 +10,7 @@ const arr = []
 let i = 0
 while (i++ < 100) arr.push(i)
 
-console.log('v 0.1.2')
+console.log('v 0.1.3')
 
 function App() {
 	const [count, setCount] = useState(0)
@@ -38,12 +38,12 @@ function App() {
 		return () => window.removeEventListener("message", onMessage)
 	}, [])
 	
-
 	return (
 		<View style={styles.container}> 
 			<Header />
 			<p>count: {count}</p>
 			<p>origin: {test}</p>
+			<p>testing: {window.testing}</p>
 			<ScrollView>
 				<Carousel style={styles.margin} />
 				<Category style={styles.margin} />
