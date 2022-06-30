@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, TextInput, Image, ScrollView } from 'react-native-web'
 
 import Header from '../components/Header'
@@ -13,10 +13,25 @@ while (i++ < 100) arr.push(i)
 console.log('v 0.1.0')
 
 function App() {
+	const [count, setCount] = useState(0)
+	const [test, setTest] = useState()
 	useEffect(() => {
 		const unsubscribe = window.addEventListener("message", message => {
+			console.log('\n\nSTART')
+			try {
+				const m = JSON.parse(message.data)
+				if (m.type != "debug") {
+					return
+				}
+			} catch (e){
+				return
+			}
 			alert(message.data)
-			console.log(message)
+			// console.log('T2', message)
+			console.log('T3', message.data)
+			console.log('T4', window)
+			setTest(JSON.stringify(message.origin))
+			setCount(c => c + 1)
 		})
 
 		return unsubscribe
@@ -26,6 +41,8 @@ function App() {
 	return (
 		<View style={styles.container}> 
 			<Header />
+			<p>count: {count}</p>
+			<p>origin: {test}</p>
 			<ScrollView>
 				<Carousel style={styles.margin} />
 				<Category style={styles.margin} />
