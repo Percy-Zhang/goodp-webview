@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { StyleSheet, View, Text, TextInput, Image, ScrollView } from 'react-native-web'
 
 import Header from '../components/Header'
@@ -8,44 +8,27 @@ import Category from '../components/Category'
 
 const arr = []
 let i = 0
-while (i++ < 100) arr.push(i)
+// while (i++ < 100) arr.push(i)
 
-console.log('v 0.1.4')
+console.log('v 0.1.5')
 
 function App() {
-	const [count, setCount] = useState(0)
-	const [test, setTest] = useState()
-	useEffect(() => {
-		const onMessage = message => {
-			console.log('\n\nSTART')
-			// alert(message.data)
-			try {
-				const m = JSON.parse(message.data)
-				if (m.type != "debug") {
-					return
-				}
-			} catch (e){
-				return
-			}
-			// console.log('T2', message)
-			console.log('T3', message.data)
-			console.log('T4', window)
-			setTest(JSON.stringify(message.origin))
-			setCount(c => c + 1)
-		}
+	const [token, setToken] = useState()
+	const dataRef = useRef()
 
-		window.addEventListener("message", onMessage)
-		return () => window.removeEventListener("message", onMessage)
-	}, [])
-	
+	useEffect(() => {
+		if (!dataRef?.current?.innerHTML) return
+		const data = JSON.parse(dataRef.current.innerHTML)
+		if (!data.valid) return
+
+		setToken(data.token)
+	}, [dataRef?.current?.innerHTML])
+
 	return (
 		<View style={styles.container}> 
 			<Header />
-			<p id={123} className={'bestClass'}></p>
-			<p>count: {count}</p>
-			<p>origin: {test}</p>
-			<p>testing: {JSON.stringify(window.testing)}</p>
-			<p>webview: {JSON.stringify(window.ReactNativeWebView)}</p>
+			<p ref={dataRef} id={'data'} hidden></p>
+			<p>token: {token}</p>
 			<ScrollView>
 				<Carousel style={styles.margin} />
 				<Category style={styles.margin} />
