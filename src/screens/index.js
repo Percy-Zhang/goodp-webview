@@ -10,7 +10,7 @@ const arr = []
 let i = 0
 while (i++ < 100) arr.push(i)
 
-console.log('v 0.1.0')
+console.log('v 0.1.1')
 
 function App() {
 	const [count, setCount] = useState(0)
@@ -18,6 +18,7 @@ function App() {
 	useEffect(() => {
 		const unsubscribe = window.addEventListener("message", message => {
 			console.log('\n\nSTART')
+			alert(message.data)
 			try {
 				const m = JSON.parse(message.data)
 				if (m.type != "debug") {
@@ -26,7 +27,6 @@ function App() {
 			} catch (e){
 				return
 			}
-			alert(message.data)
 			// console.log('T2', message)
 			console.log('T3', message.data)
 			console.log('T4', window)
