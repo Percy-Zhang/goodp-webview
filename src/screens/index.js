@@ -10,6 +10,10 @@ let i = 0
 while (i++ < 100) arr.push(i)
 
 function App() {
+	window.addEventListener("message", message => {
+		alert(message.data) 
+	})
+	
 	return (
 		<View style={styles.container}> 
 			<Header />
