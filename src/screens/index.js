@@ -10,25 +10,35 @@ const arr = []
 let i = 0
 // while (i++ < 100) arr.push(i)
 
-console.log('v0.1.5')
+console.log('v0.1.6')
 
 function App() {
 	const [token, setToken] = useState()
+	const [debug, setDebug] = useState(true)
 	const dataRef = useRef()
 
 	useEffect(() => {
+		if (!!token) return
 		if (!dataRef?.current?.innerHTML) return
 		const data = JSON.parse(dataRef.current.innerHTML)
 		if (!data.valid) return
-
 		setToken(data.token)
-	}, [dataRef?.current?.innerHTML])
+		dataRef.current.innerHTML = ''
+	}, [dataRef, debug])
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setDebug(debug => !debug)
+		}, 200)
+		return () => clearInterval(interval)
+	}, [])
+
 
 	return (
 		<View style={styles.container}> 
 			<Header />
 			<p ref={dataRef} id={'data'} hidden></p>
-			<p>token: {token}</p>
+			{!!token && <p>token: {token}</p>}
 			<ScrollView>
 				<Carousel style={styles.margin} />
 				<Category style={styles.margin} />
