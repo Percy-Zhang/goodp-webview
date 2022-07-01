@@ -1,26 +1,26 @@
 import { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native-web'
 
-import { BottomNavigation, BottomNavigationAction } from '@mui/material'
+// import { BottomNavigation, BottomNavigationAction } from '@mui/material'
 
 import Header from '../components/Header'
 import Carousel from '../components/Carousel'
 import Category from '../components/Category'
 import useCatchToken from '../hooks/useCatchToken'
-import useRequestLogin from '../apis/useRequestLogin'
+// import useRequestLogin from '../apis/useRequestLogin'
 import constants from '../constants'
 
 const { PRIMARY } = constants
 
 function App() {
-	const [route, setRoute] = useState(0)
+	// const [route, setRoute] = useState(0)
 	const dataRef = useRef()
 	const [token] = useCatchToken(dataRef)
-	const { mToken, login, loading } = useRequestLogin()
+	// const { mToken, login, loading } = useRequestLogin()
 
-	useEffect(() => {
-		login()
-	}, [])
+	// useEffect(() => {
+	// 	login()
+	// }, [])
 
 	return (
 		<View style={styles.container}> 
