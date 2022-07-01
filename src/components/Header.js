@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { StyleSheet, View, Text, TextInput, Image } from 'react-native-web'
+import constants from '../constants'
+
+const { PRIMARY } = constants
 
 function Header() {
 	const [value, setValue] = useState()
@@ -28,7 +31,7 @@ const HEADER_MARGIN = 20
 
 const styles = StyleSheet.create({
 	header: {
-		backgroundColor: '#67ae3f',
+		backgroundColor: PRIMARY,
 		paddingHorizontal: HEADER_MARGIN,
 		paddingVertical: 17,
 	},
