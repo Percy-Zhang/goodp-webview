@@ -1,50 +1,20 @@
-import { useState, useEffect, useRef } from 'react'
-import { StyleSheet, View, Text, TextInput, Image, ScrollView } from 'react-native-web'
+import { useRef } from 'react'
+import { StyleSheet, View, ScrollView } from 'react-native-web'
 
 import Header from '../components/Header'
 import Carousel from '../components/Carousel'
 import Category from '../components/Category'
-
-
-const arr = []
-let i = 0
-// while (i++ < 100) arr.push(i)
-
-console.log('v0.1.8')
+import useCatchToken from '../hooks/useCatchToken'
 
 function App() {
-	const [token, setToken] = useState()
-	const [debug, setDebug] = useState(true)
 	const dataRef = useRef()
-
-	useEffect(() => {
-		if (!!token) return
-		if (!dataRef?.current?.innerHTML) return
-		let data;
-		try {
-			data = JSON.parse(dataRef.current.innerHTML)
-		} catch (e) {
-			console.log(e)
-			return
-		}
-		if (!data.valid) return
-		setToken(data.token)
-		dataRef.current.innerHTML = ''
-	}, [dataRef, debug])
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setDebug(debug => !debug)
-		}, 200)
-		return () => clearInterval(interval)
-	}, [])
-
+	const [token] = useCatchToken(dataRef)
 
 	return (
 		<View style={styles.container}> 
-			<Header />
 			<p ref={dataRef} id={'data'} hidden></p>
-			<p>token: {token}</p>
+			<p>{token}</p>
+			<Header />
 			<ScrollView>
 				<Carousel style={styles.margin} />
 				<Category style={styles.margin} />
@@ -55,8 +25,6 @@ function App() {
 		</View>
 	)
 }
-
-const HEADER_MARGIN = 30
 
 const styles = StyleSheet.create({
 	container: {
