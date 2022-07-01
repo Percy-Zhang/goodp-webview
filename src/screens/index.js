@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native-web'
 
 // import { BottomNavigation, BottomNavigationAction } from '@mui/material'
+import * as MUI from '@mui/material'
 
 import Header from '../components/Header'
 import Carousel from '../components/Carousel'
