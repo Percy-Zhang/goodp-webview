@@ -33,7 +33,7 @@ function App() {
 				<Carousel style={styles.margin} />
 				<Category style={styles.margin} />
 			</ScrollView>
-			<BottomNavigation
+			{/* <BottomNavigation
 				showLabels
 				value={route}
 				style={styles.bottomNav}
@@ -45,7 +45,7 @@ function App() {
 				<BottomNavigationAction label='Store' />
 				<BottomNavigationAction label='Cart' />
 				<BottomNavigationAction label='Profile' />
-			</BottomNavigation>
+			</BottomNavigation> */}
 		</View>
 	)
 }
