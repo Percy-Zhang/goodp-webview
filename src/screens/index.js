@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native-web'
 
-// import { BottomNavigation, BottomNavigationAction } from '@mui/material'
+import { BottomNavigation, BottomNavigationAction } from '@mui/material'
 import { BrowserRouter } from 'react-router-dom'
 
 import Header from '../components/Header'
