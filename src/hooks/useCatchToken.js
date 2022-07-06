@@ -17,13 +17,18 @@ export default function useCatchToken(dataRef) {
 		if (data.valid !== true) return
 
 		setToken(data.token)
-		dataRef.current.innerHTML = ''
 	}, [dataRef, refresh])
 
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setRefresh(refresh => !refresh)
 		}, 200)
+
+		setTimeout(() => {
+			clearInterval(interval)
+			dataRef.current.innerHTML = ''
+		}, 2000)
+
 		return () => clearInterval(interval)
 	}, [])
 

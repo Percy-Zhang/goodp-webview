@@ -1,16 +1,14 @@
 import { useState, useContext } from 'react'
 
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { showMessage } from 'react-native-flash-message'
-
-import AppContext from '../components/AppContext'
-import { MERCHANT_URL } from '../config.json'
+import MyContext from '../components/MyContext'
+import constants from '../constants'
 
 export default () => {
+	const { MERCHANT_URL } = constants
 	const [nextLink, setNextLink] = useState(`${MERCHANT_URL}/products?page=1`)
 	const [data, setData] = useState([])
 	const [loading, setLoading] = useState(false)
-	const myContext = useContext(AppContext)
+	const myContext = useContext(MyContext)
 	const paginate = 10
 
 	const getProductList = async (reset) => {
@@ -20,19 +18,15 @@ export default () => {
 		const abortController = new AbortController()
 
 		const timeout = setTimeout(() => {
-			showMessage({
-				message: 'Error',
-				description: 'Connection timeout, please try again!',
-				type: 'warning',
-			})
-
+			alert('Connection timeout, please try again!')
 			abortController.abort()
 			setLoading(false)
-			return
+
+			return {status: false}
 		}, 20000)
 
 		try {
-			const access_token = await AsyncStorage.getItem('merchant_token')
+			const access_token = myContext.mToken
 			const link = reset
 				? `${MERCHANT_URL}/products?paginate=${paginate}&page=1`
 				: `${nextLink}&paginate=${paginate}`
@@ -40,41 +34,34 @@ export default () => {
 				signal: abortController.signal,
 				method: 'GET',
 				headers: {
-					//   'Content-Type': 'application/json',
 					Authorization: `Bearer ${access_token}`,
 				},
 			})
 
 			if (response.status >= 400 && response.status <= 500) {
-				showMessage({
-					message: 'Error',
-					description: 'Please contact Marathon for this problem.',
-					type: 'danger',
-				})
-
+				alert('Please contact Marathon for this problem.')
 				clearTimeout(timeout)
 				setLoading(false)
 
-				return false
+				return {status: false}
 			}
 
 			const responseData = await response.json()
-			// console.log("MerchantProductHook:", responseData)  //debug
+			// console.log("FetchProductList:", responseData)  //debug
 
 			if (responseData.status == 3) {
 				clearTimeout(timeout)
 				setLoading(false)
+
+				return {status: false}
 			}
 
 			if (responseData.status == 2) {
-				showMessage({
-					message: 'Error',
-					description: 'Something went wrong.',
-					type: 'warning',
-				})
-
+				alert('Something went wrong.')
 				clearTimeout(timeout)
 				setLoading(false)
+
+				return {status: false}
 			}
 
 			if (responseData.status == 1) {
@@ -88,21 +75,15 @@ export default () => {
 				}
 				setNextLink(responseData.links.next)
 
-				return true
+				return {status: true}
 			}
 		} catch (e) {
 			setLoading(false)
-
-			showMessage({
-				message: 'Error',
-				description: 'Connection problem, please try again.',
-				type: 'warning',
-			})
-
+			alert('Connection problem, please try again.')
+			clearTimeout(timeout)
 			console.log(e)
 
-			clearTimeout(timeout)
-			return false
+			return {status: false}
 		}
 	}
 
@@ -112,79 +93,62 @@ export default () => {
 		const abortController = new AbortController()
 
 		const timeout = setTimeout(() => {
-			showMessage({
-				message: 'Error',
-				description: 'Connection timeout, please try again!',
-				type: 'warning',
-			})
-
+			alert('Connection timeout, please try again!')
 			abortController.abort()
 			setLoading(false)
-			return
+
+			return {status: false}
 		}, 20000)
 
 		try {
-			const access_token = await AsyncStorage.getItem('merchant_token')
-
+			const access_token = myContext.token
 			const response = await fetch(`${MERCHANT_URL}/products/${id}`, {
 				signal: abortController.signal,
 				method: 'GET',
 				headers: {
-					//   'Content-Type': 'application/json',
 					Authorization: `Bearer ${access_token}`,
 				},
 			})
 
 			if (response.status >= 400 && response.status <= 500) {
-				showMessage({
-					message: 'Error',
-					description: 'Please contact Marathon for this problem.',
-					type: 'danger',
-				})
-
+				alert('Please contact Marathon for this problem.')
 				clearTimeout(timeout)
 				setLoading(false)
 
-				return false
+				return {status: false}
 			}
 
 			const responseData = await response.json()
-			// console.log("MerchantProductHook: getProductByIdAsync", responseData)  //debug
+			// console.log("getProductById: getProductByIdAsync", responseData)  //debug
 
 			if (responseData.status == 3) {
 				clearTimeout(timeout)
 				setLoading(false)
+
+				return {status: false}
 			}
 
 			if (responseData.status == 2) {
-				showMessage({
-					message: 'Error',
-					description: 'Something went wrong.',
-					type: 'warning',
-				})
-
+				alert('Something went wrong.')
 				clearTimeout(timeout)
 				setLoading(false)
+
+				return {status: false}
 			}
 
 			if (responseData.status == 1) {
 				clearTimeout(timeout)
 				setLoading(false)
-				return responseData.data
+
+				return {status: true, payload: responseData.data}
 			}
 		} catch (e) {
 			setLoading(false)
-
-			showMessage({
-				message: 'Error',
-				description: 'Connection problem, please try again.',
-				type: 'warning',
-			})
-
+			alert('Connection problem, please try again.')
+			clearTimeout(timeout)
 			console.log(e)
 
-			clearTimeout(timeout)
-			return false
+			return {status: false}
 		}
 	}
 

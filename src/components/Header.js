@@ -9,7 +9,7 @@ function Header() {
 	return (
 		<View style={styles.header}>
 			<View style={styles.headerRow1}>
-				<Image source={require('../assets/fries_menu.png')} style={styles.menu}/>
+				{/* <Image source={require('../assets/fries_menu.png')} style={styles.menu}/> */}
 				<Text style={styles.headerTitle}>Good P Market</Text>
 				<View style={{flex: 1}} />
 				<Image source={require('../assets/close_minus.png')} style={styles.minus}/>
@@ -45,8 +45,9 @@ const styles = StyleSheet.create({
 		marginRight: 15,
 	},
 	headerTitle: {
+		paddingLeft: 5,
 		fontSize: 18,
-		color: 'white'
+		color: 'white',
 	},
 	minus: {
 		height: 25,
