@@ -1,75 +1,58 @@
-import { useState } from 'react'
-import { StyleSheet, View, Text, TextInput, Image } from 'react-native-web'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native-web'
+import { useNavigate } from 'react-router-dom';
+
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+
 import constants from '../constants'
 
 const { PRIMARY } = constants
 
-function Header() {
-	const [value, setValue] = useState()
+export default function Header({ title, showCart }) {
+	const navigate = useNavigate()
+
+	const goBack = () => navigate(-1)
+
 	return (
 		<View style={styles.header}>
-			<View style={styles.headerRow1}>
-				{/* <Image source={require('../assets/fries_menu.png')} style={styles.menu}/> */}
-				<Text style={styles.headerTitle}>Good P Market</Text>
+			<View style={styles.headerRow}>
+				<IconHoc Icon={ArrowBackIosIcon} style={styles.arrowIcon} onPress={goBack}/>
+				<Text style={styles.headerTitle}>{title}</Text>
 				<View style={{flex: 1}} />
-				<Image source={require('../assets/close_minus.png')} style={styles.minus}/>
+				{ showCart && <IconHoc Icon={ShoppingCartIcon} style={styles.cartIcon} onPress={void 0}/>}
 			</View>
-			<View style={styles.headerRow2}>
-				<TextInput 
-					style={styles.searchBar}
-					value={value}
-					onChangeText={setValue}
-				/>
-				<Image source={require('../assets/search.png')} style={styles.search}/>
-			</View>
-			
 		</View>
 	)
 }
 
-const HEADER_MARGIN = 20
+const IconHoc = ({ Icon, style, onPress}) => (
+	<TouchableOpacity onPress={onPress}><Icon style={style}/></TouchableOpacity>
+)
+
+const HEADER_MARGIN = 30
 
 const styles = StyleSheet.create({
 	header: {
 		backgroundColor: PRIMARY,
 		paddingHorizontal: HEADER_MARGIN,
 		paddingVertical: 17,
+		alignSelf: 'stretch',
 	},
-	headerRow1: {
+	headerRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
-	menu: {
-		height: 30,
-		width: 30,
-		marginRight: 15,
+	arrowIcon: {
+		fontSize: 25,
+		color: 'white'
 	},
 	headerTitle: {
 		paddingLeft: 5,
-		fontSize: 18,
+		fontSize: 20,
 		color: 'white',
 	},
-	minus: {
-		height: 25,
-		width: 25,
-	},
-	headerRow2: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		borderRadius: 50,
-		backgroundColor: '#7fbf5f',
-		marginTop: 8,
-		paddingHorizontal: 16,
-		paddingVertical: 8,
-	},
-	searchBar: {
-		flex: 1,
-		outlineStyle: 'none',
-	},
-	search: {
-		width: 25,
-		height: 25,
+	cartIcon: {
+		fontSize: 30,
+		color: 'white',
 	},
 })
-
-export default Header;

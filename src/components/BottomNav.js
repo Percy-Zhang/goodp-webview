@@ -12,7 +12,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox'
 
 import constants from '../constants'
 
-const { PRIMARY, NAVBAR_HEIGHT } = constants
+const { PRIMARY, NAVBAR_HEIGHT, PATH } = constants
 
 const BottomNavigationAction = styled(MuiBottomNavigationAction)(`
   color: #ddd;
@@ -32,10 +32,10 @@ export default function BottomNav({ route, setRoute }) {
 				setRoute(newValue)
 			}}
 		>
-			<BottomNavigationAction component={Link} to='/' label='Home' icon={<HomeIcon />} />
+			<BottomNavigationAction component={Link} to={PATH.HOME} label='Home' icon={<HomeIcon />} />
 			<BottomNavigationAction label='Store' icon={<StoreIcon />} />
-			<BottomNavigationAction component={Link} to='/cart' label='Cart' icon={<ShoppingCartIcon />} />
-			<BottomNavigationAction component={Link} to='/profile' label='Profile' icon={<AccountBoxIcon />} />
+			<BottomNavigationAction component={Link} to={PATH.CART} label='Cart' icon={<ShoppingCartIcon />} />
+			<BottomNavigationAction component={Link} to={PATH.PROFILE} label='Profile' icon={<AccountBoxIcon />} />
 		</BottomNavigation>
 	)
 }

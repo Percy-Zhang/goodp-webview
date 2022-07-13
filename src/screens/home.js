@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native-web'
 
-import Header from '../components/Header'
+import MainHeader from '../components/MainHeader'
 import Carousel from '../components/Carousel'
 import Category from '../components/Category'
 import ProductItem from '../components/ProductItem'
@@ -9,7 +9,7 @@ import useFetchProductList from '../apis/useFetchProductList'
 
 import constants from '../constants'
 
-const { SCREEN_HEIGHT } = constants
+const { SCREEN_HEIGHT_NAVBAR } = constants
 
 export default function HomePage() {
 	const { loading, data, getProductList } = useFetchProductList()
@@ -23,35 +23,29 @@ export default function HomePage() {
 	}
 
 	const loadMore = async () => {
-		console.log('loadMore')
 		await getProductList()
 	}
 
-	const extractKey = (item) => item.id
 
 	const renderItem = useMemo(() => ({item, index}) => (
-		<ProductItem item={item} index={index} /> 
+		<ProductItem key={item.id} item={item} index={index} /> 
 	), [])
 
 
 	return (
 		<View style={styles.container}> 
-			<Header />
+			<MainHeader />
 			<ScrollView>
 				<Carousel style={styles.margin} />
 				<Category style={styles.margin} />
 				<Category style={styles.margin} />
 				<FlatList
+					style={styles.flatList}
 					data={data}
 					renderItem={renderItem}
-					style={styles.flatList}
-					// refreshControl={<RefreshControl onRefresh={refreshPage} refreshing={loading} />}
-					// ListFooterComponent={<FooterComponent loading={loading} />}
-					// ListEmptyComponent={<EmptyComponent loading={loading} />}
-					keyExtractor={extractKey}
 					onEndReached={loadMore}
 					numColumns={2}
-					initialNumToRender={10}
+					initialNumToRender={4}
 				/>
 			</ScrollView>
 		</View>
@@ -60,7 +54,7 @@ export default function HomePage() {
 
 const styles = StyleSheet.create({
 	container: {
-		height: SCREEN_HEIGHT,
+		height: SCREEN_HEIGHT_NAVBAR,
 		backgroundColor: '#ddd',
 	},
 	margin: {

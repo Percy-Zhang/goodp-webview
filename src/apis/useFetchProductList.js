@@ -3,8 +3,9 @@ import { useState, useContext } from 'react'
 import MyContext from '../components/MyContext'
 import constants from '../constants'
 
+const { MERCHANT_URL } = constants
+
 export default () => {
-	const { MERCHANT_URL } = constants
 	const [nextLink, setNextLink] = useState(`${MERCHANT_URL}/products?page=1`)
 	const [data, setData] = useState([])
 	const [loading, setLoading] = useState(false)
@@ -50,6 +51,7 @@ export default () => {
 			// console.log("FetchProductList:", responseData)  //debug
 
 			if (responseData.status == 3) {
+				alert('Session expired (2)')
 				clearTimeout(timeout)
 				setLoading(false)
 
@@ -87,7 +89,7 @@ export default () => {
 		}
 	}
 
-	const getProductByIdAsync = async (id) => {
+	const getProductById = async (id) => {
 		setLoading(true)
 
 		const abortController = new AbortController()
@@ -99,9 +101,8 @@ export default () => {
 
 			return {status: false}
 		}, 20000)
-
 		try {
-			const access_token = myContext.token
+			const access_token = myContext.mToken
 			const response = await fetch(`${MERCHANT_URL}/products/${id}`, {
 				signal: abortController.signal,
 				method: 'GET',
@@ -144,7 +145,6 @@ export default () => {
 			}
 		} catch (e) {
 			setLoading(false)
-			alert('Connection problem, please try again.')
 			clearTimeout(timeout)
 			console.log(e)
 
@@ -156,6 +156,6 @@ export default () => {
 		loading,
 		data,
 		getProductList,
-		getProductByIdAsync,
+		getProductById,
 	}
 }
